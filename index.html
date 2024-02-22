@@ -1,6 +1,7 @@
 
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+      <meta name="viewport" content="width=device-width",initial-scale=1.0">
      <style>
         body {
 
@@ -9,8 +10,26 @@
           background-size: cover;
           height: 100%;
           background-position:center;
-
+          margin:0;
         }
+        ul.navTop{
+          list-style-type: none;
+          overflow:hidden;
+          margin:0;
+          padding:0;
+          background-color:rgb(130, 148, 229);
+        }
+        ul.navTop li{float:left;}
+        ul.navTop li a{
+          display:block;
+          color:rgb(24, 24, 24);
+          text-align:center;
+          padding: 16px 20px;
+          text-decoration: aqua;
+        }
+        ul.navTop li a:hover:not(.active) {background-color: bisque;}
+        ul.navTop li a.active {background-color: rgb(249, 195, 238);}
+        ul.navTop li.right {float:right;}
     </style>
     <title>Ming Chen</title>
     <style type="text/css" id="operaUserStyle"></style>
@@ -22,7 +41,10 @@
         </center>
     </h2>
     <hr>
-    
+    <ul class="navTop">
+      <li><a class="active" href="index.html">Home</a></li>
+      <li><a href="Lab3.html">Lab3</a></li>
+    </ul>
     <p>
      My major is Computer Science. I would like to work as a software engineer.
     </p>
