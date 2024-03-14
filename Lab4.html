@@ -38,71 +38,87 @@
       </style>
       <title>Ming Chen</title>
       <style type="text/css" id="operaUserStyle"></style>
-      <script type="text/javascript"> 
+      <script type="text/javascript">
           document.writeln("<h1><center>Ming's Tea House!<center></h1>");
           window.alert("Welcome to Ming's Tea House");
-          var name, itemNo, qty, total,newDate,temp;
-          now = new Date();
-          temp = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-          newDate = temp.toLocaleDateString('en-US');
-          hours = now.getHours();
-
-          name = window.prompt("Please enter your name", "name");
-          itemNo = window.prompt("Please enter the item no. of tea (the no between 1-99):\n 1.Blue Galaxy Milk Tea   $4;\n2.Passion Fruit Tea      $5;\n 3.Strawberry Milk Tea    $6;\n 4.Pineapple Jelly Tea    $7", "number");
-          qty = window.prompt("please enter the quantity of tea", "quantity");
-
-          if (hours < 12) {
-              document.writeln("<h1>Good Morning " + name + ", Thank you for Ordering!" + "<br>");
-          } else if (hours < 18) {
-              document.writeln("<h1>Good Afternoon " + name + ", Thank you for Ordering!" + "<br>");
-          }
-          else {
-              document.writeln("<h1>Good Evening " + name + ", Thank you for Ordering!" + "<br>");
-          }
-
-          if (parseInt(itemNo) == 1) {
-              total = 4 * parseInt(qty);
-              document.writeln("1.Blue Galaxy Milk Tea    " + "<br>" + "Quantity: " + qty + "<br>" + "    Price:" + total+"<br>");
-              document.writeln("Arrival Date: " + newDate);
-          } else if (parseInt(itemNo)== 2) {
-              total = 5 * parseInt(qty);
-              document.writeln("2.Passion Fruit Tea    " + "<br>" + "Quantity: " + qty + "<br>" + "    Price:" + total+"<br>");
-              document.writeln("Arrival Date: " + newDate);
-          } else if (parseInt(itemNo) == 3) {
-              total = 6 * parseInt(qty);
-              document.writeln("3.Strawberry Milk Tea    " + "<br>" + "Quantity: " + qty + "<br>" + "    Price:" + total + "<br>");
-              document.write("Arrival Date: " + newDate);
-          } else if (parseInt(itemNo)== 4) {
-              total = 4 * parseInt(qty);
-              document.writeln("4.Pineapple Jelly Tea    " + "<br>" + "Quantity: " + qty + "<br>" + "    Price:" + total + "<br>");
-              document.writeln("Arrival Date: " + newDate);
-          } else {
-              document.writeln("Wrong item number!");
-          }
       </script>
-</head>
+
+</head >
 <body>
     <hr />
     <div class="container">
-      
-      <div  class="row">
-          <div class="col-md-8">
-            <h3> Please choose your favourite milk tea:</h3>
-            <ol>
-               <li>Blue Galaxy Milk Tea   $4</li>
-               <li>Passion Fruit Tea      $5</li> 
-               <li>Strawberry Milk Tea    $6</li>
-               <li>Pineapple Jelly Tea    $7</li> 
-            </ol>
-            
-          </div>
-          <div class="col-md-4">
-            <img src="https://thumbs.dreamstime.com/z/view-asian-fruit-tea-beverage-restaurant-kitchen-setting-featuring-colorful-jelly-toppings-fruit-jelly-drink-183016757.jpg?ct=jpeg" 
-            alt="fruit tea picture" class="img-rounded" style="float:left;width:320px;height:480px;">
-          </div>
-      </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <h3> Please choose your favourite milk tea:</h3>
+                <ol>
+                    <li>Blue Galaxy Milk Tea   $4</li>
+                    <li>Passion Fruit Tea      $5</li>
+                    <li>Strawberry Milk Tea    $6</li>
+                    <li>Pineapple Jelly Tea    $7</li>
+                </ol>
+
+            </div>
+            <div class="col-md-4">
+                <img src="https://thumbs.dreamstime.com/z/view-asian-fruit-tea-beverage-restaurant-kitchen-setting-featuring-colorful-jelly-toppings-fruit-jelly-drink-183016757.jpg?ct=jpeg"
+                     alt="fruit tea picture" class="img-rounded" style="float:left;width:160px;height:240px;">
+            </div>
+            <div id="output" class="col-md-4"></div>
+        </div>
 
     </div>
     
+
+    <script type="text/javascript">
+        function order() {
+            var name, itemNo, qty, total, newDate, temp;
+            now = new Date();
+            temp = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+            newDate = temp.toLocaleDateString('en-US');
+            hours = now.getHours();
+
+            name = window.prompt("Please enter your name", "name");
+            itemNo = window.prompt("Please enter the item no. of tea (the no between 1-99):\n 1.Blue Galaxy Milk Tea   $4;\n2.Passion Fruit Tea      $5;\n 3.Strawberry Milk Tea    $6;\n 4.Pineapple Jelly Tea    $7", "number");
+            while (parseInt(itemNo) <= 0 || parseInt(itemNo) >= 100) {
+                itemNo = window.prompt("Please enter the item no. of tea (the no between 1-99):\n 1.Blue Galaxy Milk Tea   $4;\n2.Passion Fruit Tea      $5;\n 3.Strawberry Milk Tea    $6;\n 4.Pineapple Jelly Tea    $7", "number");
+            }
+            qty = window.prompt("please enter the quantity of tea", "quantity");
+            var display = document.getElementById("output");
+            if (hours < 12) {
+                display.innerHTML = "<h1>Good Morning " + name + ", Thank you for Ordering!" + "<br>";
+            } else if (hours < 18) {
+                display.innerHTML = "<h1>Good Afternoon " + name + ", Thank you for Ordering!" + "<br>";
+            }
+            else {
+                display.innerHTML = "<h1>Good Evening " + name + ", Thank you for Ordering!" + "<br>";
+            }
+
+            if (parseInt(itemNo) == 1) {
+                total = 4 * parseInt(qty);
+                display.innerHTML += "1.Blue Galaxy Milk Tea    " + "<br>" + "Quantity: " + qty + "<br>" + "    Price:" + total + "<br>" + "Arrival Date: " + newDate;
+
+            } else if (parseInt(itemNo) == 2) {
+                total = 5 * parseInt(qty);
+                display.innerHTML += "2.Passion Fruit Tea    " + "<br>" + "Quantity: " + qty + "<br>" + "    Price:" + total + "<br>" + "Arrival Date: " + newDate;
+
+
+            } else if (parseInt(itemNo) == 3) {
+                total = 6 * parseInt(qty);
+                display.innerHTML += "3.Strawberry Milk Tea    " + "<br>" + "Quantity: " + qty + "<br>" + "    Price:" + total + "<br>" + "Arrival Date: " + newDate;
+
+
+            } else if (parseInt(itemNo) == 4) {
+                total = 4 * parseInt(qty);
+                display.innerHTML += "4.Pineapple Jelly Tea    " + "<br>" + "Quantity: " + qty + "<br>" + "    Price:" + total + "<br>" + "Arrival Date: " + newDate;
+
+
+            } else {
+                display.innerHTML += "Wrong item number!";
+            }
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            order();
+        });
+    </script>
 </body>
 </html>
