@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8">
+      <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+      <meta name="viewport" content="width=device-width",initial-scale=1.0">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="https://code.jquery.com/jquery-latest.js"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="final.css">
+      
+      <title>Ming Chen</title>
+      <style type="text/css" id="operaUserStyle"></style>
+      <script type="text/javascript">
+          document.writeln("<h1><center> Ming's Music Channel <center></h1>");
+         
+      </script>
+
+</head >
+<body>
+    <hr />
+    <ul class="navTop">
+      <li><a href="index.html">Home</a></li>  
+      <li><a class="active" href="Search.html">Music Channel</a></li>
+      <li><a href="Artist.html">Artist</a></li>
+      <li><a href="Member.html">Member</a></li> 
+      <li>
+        <form class="navRight">
+          <input type="text" name="inputSearch" id="receiveInput" placeholder="Search album, song, artist" size="60" title="search album,song and artist">
+          <button type="button" onclick="searchCurrent()"><i class="fa fa-search"></i></button>
+        </form>
+      </li>
+    </ul>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-6" id="table">
+              <table id="output" class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Icon</th>
+                    <th><center>Name</center></th>
+                    <th><center>Artist</center></th>
+                    <th>Page Views</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><img src="" id="id1" style="width:60px;height:60px;" onclick="" title="click to show lyrics"></img></td>
+                    <td><a id="link1" href="" onclick="" target="_blank"></a></td>
+                    <td ><a id="artist1" href="" onclick=""></a></td>
+                    <td id="view1"></td>
+                  </tr>
+                  <tr>
+                    <td><img src="" id="id2" style="width:60px;height:60px;" title="click to show lyrics"></img></td>
+                    <td><a id="link2" href="" onclick="" target="_blank"></a></td>
+                    <td><a id="artist2" href="" onclick=""></a></td>
+                    <td id="view2"></td>
+                  </tr>
+                  <tr>
+                    <td><img src="" id="id3" style="width:60px;height:60px;" title="click to show lyrics"></img></td>
+                    <td><a id="link3" href="" onclick="" target="_blank"></a></td>
+                    <td><a id="artist3" href="" onclick=""></a></td>
+                    <td id="view3"></td>
+                  </tr>
+                  <tr>
+                    <td><img src="" id="id4" style="width:60px;height:60px;" title="click to show lyrics"></img></td>
+                    <td><a id="link4" href="" onclick="" target="_blank"></a></td>
+                    <td><a id="artist4" href="" onclick=""></a></td>
+                    <td id="view4"></td>
+                  </tr>
+                  <tr>
+                    <td><img src="" id="id5" style="width:60px;height:60px;" title="click to show lyrics"></img></td>
+                    <td><a id="link5" href="" onclick="" target="_blank"></a></td>
+                    <td><a id="artist5" href="" onclick=""></a></td>
+                    <td id="view5"></td>
+                  </tr>
+                  <tr>
+                    <td><img src="" id="id6" style="width:60px;height:60px;" title="click to show lyrics"></img></td>
+                    <td><a id="link6" href="" onclick="" target="_blank"></a></td>
+                    <td><a id="artist6" href="" onclick=""></a></td>
+                    <td id="view6"></td>
+                  </tr>
+                  <tr>
+                    <td><img src="" id="id7" style="width:60px;height:60px;" title="click to show lyrics"></img></td>
+                    <td><a id="link7" href="" onclick="" target="_blank"></a></td>
+                    <td><a id="artist7" href="" onclick=""></a></td>
+                    <td id="view7"></td>
+                  </tr>
+                  <tr>
+                    <td><img src="" id="id8" style="width:60px;height:60px;" title="click to show lyrics"></img></td> 
+                    <td><a id="link8" href=""  onclick="" target="_blank"></a></td>
+                    <td><a id="artist8" href="" onclick=""></a></td>
+                    <td id="view8"></td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+              
+            </div>
+
+            <div  class="col-md-6">
+                <p style="color:blue"><b> The lyrics of the Music</b></p>
+                <iframe id="lyrics" width="500" height="580"></iframe>
+            </div>
+        </div>
+
+    </div>
+    
+
+    <script>
+       
+    //function searchRandom take search content from index.html and search the corresponding song information.
+       async function searchRandom()
+       {
+        const searchValue = new URLSearchParams(window.location.search);//take value from index.html
+        const request = searchValue.get('search');//save search content in variable request
+       
+        document.getElementById("receiveInput").placeholder=request;
+       
+       const source = "https://genius-song-lyrics1.p.rapidapi.com/search/?q="+request;
+
+       const getMethod = 
+        {
+         method: 'GET',
+         headers: {
+          'X-RapidAPI-Key': '9699f6c659msh7c75bca2bab801fp1871f4jsnb0597bb867dd',
+		      'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com'
+            }
+        };
+
+        try{
+         const response = await fetch(source, getMethod);
+         if(!response.ok){
+             throw new Error('network response failed');
+           }
+         const fact = await response.text();
+         const myObj = JSON.parse(fact)
+         console.log("title"+myObj["hits"][0]["result"]["title"]);
+         myObj["hits"].sort((x,y)=>y.result.stats.pageviews-x.result.stats.pageviews);
+         document.getElementById("output").style.display="block";
+        for(let i=1;i<=myObj["hits"].length;i++){
+            document.getElementById("id"+i).src = myObj["hits"][i-1]["result"]["header_image_thumbnail_url"];
+            // pass id to function listLyrics to show lyrics when click the icon
+            document.getElementById("id"+i).onclick=()=>listLyrics(myObj["hits"][i-1]["result"]["id"]);
+            document.getElementById("link"+i).innerHTML = myObj["hits"][i-1]["result"]["title"];
+            document.getElementById("link"+i).href =myObj["hits"][i-1]["result"]["url"];
+            document.getElementById("artist"+i).innerText = myObj["hits"][i-1]["result"]["primary_artist"]["name"];
+            //pass id and name to function artistInfo
+            document.getElementById("artist"+i).onclick=()=>artistInfo(myObj["hits"][i-1]["result"]["primary_artist"]["id"],myObj["hits"][i-1]["result"]["primary_artist"]["name"]);
+            document.getElementById("view"+i).innerText=myObj["hits"][i-1]["result"]["stats"]["pageviews"];
+            
+         }
+         
+
+      }catch(error){
+        console.error('fetch failed',error);
+      }
+    }
+    
+    
+    // function listLyrics to show song Lyrics
+    async function listLyrics(idCopy){
+       
+       const source = "https://genius-song-lyrics1.p.rapidapi.com/song/lyrics/?id="+idCopy;
+       const getMethod = 
+        {
+         method: 'GET',
+         headers: {
+          'X-RapidAPI-Key': '9699f6c659msh7c75bca2bab801fp1871f4jsnb0597bb867dd',
+		      'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com'
+            }
+        };
+
+        try{
+         const response = await fetch(source, getMethod);
+         if(!response.ok){
+             throw new Error('network response failed');
+           }
+         const fact = await response.text();
+         const myObj = JSON.parse(fact);
+         //show lyrics in specific position labeled "lyrics"
+         document.getElementById("lyrics").srcdoc=myObj["lyrics"]["lyrics"]["body"]["html"];
+         }catch(error){
+         }
+    }
+
+    // go to Artist.html and save the artist name and id
+    function artistInfo(idCopy,nameCopy){
+      window.location.href = `Artist.html?id=${idCopy}&name=${nameCopy}`;
+        
+        return false;
+    }
+    //run function searchRandom
+    searchRandom();
+
+    //function searchCurrent search song informaiton when user type related information in the search bar
+    async function searchCurrent()
+      {
+       const content = document.getElementById("receiveInput").value;//take value from search bar
+       const source = "https://genius-song-lyrics1.p.rapidapi.com/search/?q="+content;
+
+       const getMethod = 
+        {
+         method: 'GET',
+         headers: {
+          'X-RapidAPI-Key': '9699f6c659msh7c75bca2bab801fp1871f4jsnb0597bb867dd',
+		      'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com'
+            }
+        };
+
+        try{
+         const response = await fetch(source, getMethod);
+         if(!response.ok){
+             throw new Error('network response failed');
+           }
+         const fact = await response.text();
+         const myObj = JSON.parse(fact)
+         console.log("title"+myObj["hits"][0]["result"]["title"]);
+         //sort the records in descending order based on pageviews
+         myObj["hits"].sort((x,y)=>y.result.stats.pageviews-x.result.stats.pageviews);
+         document.getElementById("output").style.display="block";//make the talbe visible
+        for(let i=1;i<=myObj["hits"].length;i++){
+            document.getElementById("id"+i).src = myObj["hits"][i-1]["result"]["header_image_thumbnail_url"];
+            //pass id to function listLyrics when use clicks the icon
+            document.getElementById("id"+i).onclick=()=>listLyrics(myObj["hits"][i-1]["result"]["primary_artist"]["id"]);
+            document.getElementById("link"+i).innerHTML = myObj["hits"][i-1]["result"]["title"];
+            document.getElementById("link"+i).href =myObj["hits"][i-1]["result"]["url"];//url links to outside player
+            document.getElementById("artist"+i).innerText = myObj["hits"][i-1]["result"]["primary_artist"]["name"];
+            document.getElementById("view"+i).innerText=myObj["hits"][i-1]["result"]["stats"]["pageviews"];
+            
+         }
+         
+
+      }catch(error){
+        console.error('fetch failed',error);
+      }
+    }
+    
+    
+
+    </script>
+</body>
+</html>

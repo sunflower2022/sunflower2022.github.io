@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8">
+      <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+      <meta name="viewport" content="width=device-width",initial-scale=1.0">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="https://code.jquery.com/jquery-latest.js"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="final.css">
+      
+      <title>Ming Chen</title>
+      <style type="text/css" id="operaUserStyle"></style>
+      <script type="text/javascript">
+          document.writeln("<h1><center> Ming's Music Channel <center></h1>");
+         
+      </script>
+
+</head >
+<body>
+    <hr />
+    <ul class="navTop">
+      <li><a href="index.html">Home</a></li>  
+      <li><a href="Search.html">Music Channel</a></li>
+      <li><a class="active" href="Artist.html">Artist</a></li>
+      <li><a href="Member.html">Member</a></li> 
+      <li>
+        <form class="navRight">
+          <input type="text" name="inputSearch" id="receiveInput" placeholder="Search artist" size="60" title="Please type information to search related artist">
+          <button type="button" onclick="searchCurrent()"><i class="fa fa-search"></i></button>
+        </form>
+      </li>
+    </ul>
+    <div class="container">
+
+        <div class="row">
+
+            <div  class="col-md-4">
+               <img src="https://www.creativefabrica.com/wp-content/uploads/2023/05/23/Kawaii-Cartoon-Child-Musician-Playing-Saxophone-70363775-1.png" id="artistPhoto" style="width:350px;height:500px;" alt="artist photo">
+               
+              </img>
+           
+            </div>
+            <div class="col-md-8" id="table">
+              <p>Artist Information(please use search to find your favourite artist informaiton)</p>
+              <table id="output" class="table table-hover">
+                  <tr>
+                    <th>Name</th>
+                    <td id="name"></td>  
+                  </tr>
+                  <tr>
+                    <th>Followers Count</th>
+                    <td id="follower"></td>
+                  </tr>
+                  <tr>
+                    <th>Facebook Name</th>
+                    <td id="facebook"></td>
+                  </tr>
+                  <tr>
+                    <th>Instagram Name</th>
+                    <td id="instagram"></td>
+                  </tr>
+                  <tr>
+                    <th>Twitter Name</th>
+                    <td id="twitter"></td>
+                  </tr>
+                  <tr>
+                    <th>Description</th>
+                    <td><iframe id="description" width="500" height="300"></iframe></td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+              
+            </div>
+
+           
+        </div>
+
+    </div>
+    
+
+    <script>
+       
+    //function searchRandom take search content from Search.html and search the artist information
+       async function searchRandom()
+       {
+        const searchValue = new URLSearchParams(window.location.search);
+        const requestId = searchValue.get('id');
+        const requestName=searchValue.get('name');
+        //console.log(requestId);
+        //console.log(requestName);
+        document.getElementById("receiveInput").placeholder=requestName;//show search content in the search bar
+       
+       const source = "https://genius-song-lyrics1.p.rapidapi.com/artist/details/?id="+requestId;
+
+       const getMethod = 
+        {
+         method: 'GET',
+         headers: {
+          'X-RapidAPI-Key': '9699f6c659msh7c75bca2bab801fp1871f4jsnb0597bb867dd',
+		      'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com'
+            }
+        };
+
+        try{
+         const response = await fetch(source, getMethod);
+         if(!response.ok){
+             throw new Error('network response failed');
+           }
+         const fact = await response.text();
+         const myObj = JSON.parse(fact)
+        // console.log("name"+myObj["artist"]["name"]);
+        //show artist image,name, followers count, facebook name, instagram name, twitter name and description.
+         document.getElementById("output").style.display="block";
+            document.getElementById("artistPhoto").src = myObj["artist"]["image_url"];
+            document.getElementById("name").innerHTML = myObj["artist"]["name"];
+            document.getElementById("follower").innerText=myObj["artist"]["followers_count"];
+            document.getElementById("facebook").innerHTML =myObj["artist"]["facebook_name"];
+            document.getElementById("instagram").innerText = myObj["artist"]["instagram_name"];
+            document.getElementById("twitter").innerText = myObj["artist"]["twitter_name"];
+            document.getElementById("description").srcdoc=myObj["artist"]["description"]["html"];
+ 
+
+      }catch(error){
+        console.error('fetch failed',error);
+      }
+    }
+    
+    
+    //run function searchRandom
+    searchRandom();
+
+    //Function searchCurrent search artist information when users types in related information in current search bar
+    async function searchCurrent()
+      {
+       const content = document.getElementById("receiveInput").value;// take input from search bar
+       const source = "https://genius-song-lyrics1.p.rapidapi.com/search/?q="+content;
+
+       const getMethod = 
+        {
+         method: 'GET',
+         headers: {
+          'X-RapidAPI-Key': '9699f6c659msh7c75bca2bab801fp1871f4jsnb0597bb867dd',
+		      'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com'
+            }
+        };
+
+        try{
+         const response = await fetch(source, getMethod);
+         if(!response.ok){
+             throw new Error('network response failed');
+           }
+         const fact = await response.text();
+         const myObj = JSON.parse(fact)
+       // console.log("title"+myObj["hits"][0]["result"]["title"]);
+       //list the records in descending order
+         myObj["hits"].sort((x,y)=>y.result.stats.pageviews-x.result.stats.pageviews);
+        document.getElementById("output").style.display="block";
+
+        const artistId=myObj["hits"][0]["result"]["primary_artist"]["id"];
+        //run function artist to search artist information
+        artist(artistId);
+
+      }catch(error){
+        console.error('fetch failed',error);
+      }
+    }
+
+    //function artist search artist information
+    async function artist(idCopy)
+       {
+        
+       const source = "https://genius-song-lyrics1.p.rapidapi.com/artist/details/?id="+idCopy;
+
+       const getMethod = 
+        {
+         method: 'GET',
+         headers: {
+          'X-RapidAPI-Key': '9699f6c659msh7c75bca2bab801fp1871f4jsnb0597bb867dd',
+		      'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com'
+            }
+        };
+
+        try{
+         const response = await fetch(source, getMethod);
+         if(!response.ok){
+             throw new Error('network response failed');
+           }
+         const fact = await response.text();
+         const myObj = JSON.parse(fact)
+         //console.log("name"+myObj["artist"]["name"]);
+         document.getElementById("output").style.display="block";
+         //show artist information in specific location labeled
+            document.getElementById("artistPhoto").src = myObj["artist"]["image_url"];
+            
+            document.getElementById("name").innerHTML = myObj["artist"]["name"];
+            document.getElementById("follower").innerText=myObj["artist"]["followers_count"];
+            document.getElementById("facebook").innerHTML =myObj["artist"]["facebook_name"];
+            document.getElementById("instagram").innerText = myObj["artist"]["instagram_name"];
+            document.getElementById("twitter").innerText = myObj["artist"]["twitter_name"];
+            document.getElementById("description").srcdoc=myObj["artist"]["description"]["html"];
+ 
+
+      }catch(error){
+        console.error('fetch failed',error);
+      }
+    }
+    
+
+    </script>
+</body>
+</html>
